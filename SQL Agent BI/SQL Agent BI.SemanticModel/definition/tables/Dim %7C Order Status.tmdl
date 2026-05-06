@@ -1,0 +1,32 @@
+table 'Dim | Order Status'
+	lineageTag: fd5ef6af-b43a-428b-831d-91c5d1fb882a
+
+	column statusid
+		dataType: int64
+		formatString: 0
+		lineageTag: 94ccb666-bae2-46be-b09e-9fcacc55f4a1
+		summarizeBy: none
+		sourceColumn: statusid
+
+		annotation SummarizationSetBy = Automatic
+
+	column statusname
+		dataType: string
+		lineageTag: 01f044a4-72e7-4e37-9afb-a3f06aedb2c5
+		summarizeBy: none
+		sourceColumn: statusname
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim | Order Status' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.order_status", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

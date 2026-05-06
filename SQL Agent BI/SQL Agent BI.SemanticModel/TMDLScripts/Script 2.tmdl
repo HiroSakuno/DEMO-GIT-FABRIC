@@ -1,0 +1,60 @@
+createOrReplace
+
+    table Medidas
+        lineageTag: f45ee011-7bee-4d90-a5a3-6f6c248eeebe
+
+        column Column
+            formatString: 0
+            lineageTag: acd04234-ed49-4c9f-a2de-c75352dc5913
+            summarizeBy: sum
+            isNameInferred
+            sourceColumn: [Column]
+
+            annotation SummarizationSetBy = Automatic
+
+        partition Medidas = calculated
+            mode: import
+            source = Row("Column", BLANK())
+
+        annotation PBI_Id = 789a611203a045998977dce73fcdb9fc
+
+        annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+
+        measure 'Total Orders'
+            expression: COUNTROWS('Fact | Orders')
+            formatString: "#,0"
+
+        measure 'Total Quantity'
+            expression: SUM('Fact | Orders'[quantity])
+            formatString: "#,0"
+
+        measure 'Total Revenue'
+            expression: SUM('Fact | Orders'[totalamount])
+            formatString: "$#,0.00"
+
+        measure 'Average Ticket'
+            expression: DIVIDE([Total Revenue], [Total Orders])
+            formatString: "$#,0.00"
+
+        measure 'Unique Customers'
+            expression: DISTINCTCOUNT('Fact | Orders'[customerid])
+            formatString: "#,0"
+
+        measure '% Cancelled Orders'
+            expression: 
+                DIVIDE(
+                    CALCULATE([Total Orders], 'Dim | Order Status'[statusname] = "Cancelled"),
+                    [Total Orders]
+                )
+            formatString: "0.00%"
+
+        measure 'Current Stock'
+            expression: SUM('Fact | Inventory Snapshot'[quantity])
+            formatString: "#,0"
+
+        measure 'Stock C
+                DIVIDE(
+                    [Current Stock],
+                    DIVIDE([Total Quantity], DISTINCTCOUNT('Dim | Calendar'[calendardate]))
+                )
+            formatString: "#,0"

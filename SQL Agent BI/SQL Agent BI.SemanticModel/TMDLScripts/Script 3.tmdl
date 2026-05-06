@@ -1,0 +1,33 @@
+createOrReplace
+
+    ref table Medidas
+
+        measure 'Average Ticket' =
+            DIVIDE([Total Revenue], [Total Orders])
+        lineageTag: ccdb9768-a697-4164-87ad-8214fc4dba25
+        formatString: $#,0.00;($#,0.00);$#,0.00
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Net Revenue' =
+            CALCULATE(
+                [Total Revenue],
+                'Dim | Order Status'[statusid] <> 4
+            )
+        lineageTag: 44fd3459-7d34-40ab-bb3f-b0bc8b183d11
+        formatString: $#,0.00;($#,0.00);$#,0.00
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Potential Lost Revenue' =
+            CALCULATE(
+                [Total Revenue],
+                'Dim | Order Status'[statusid] = 4
+            )
+        lineageTag: 75327da9-693a-4ab1-8c6a-35f125d0fd5a
+        formatString: $#,0.00;($#,0.00);$#,0.00
+
+        measure 'Total Revenue' =
+            SUM('Fact | Orders'[totalamount])
+        lineageTag: 31ce956f-70bb-4bc8-937a-30a5122e5a15
+        formatString: $#,0.00;($#,0.00);$#,0.00
+        annotation PBI_FormatHint = {"isGeneralNumber":true}
+

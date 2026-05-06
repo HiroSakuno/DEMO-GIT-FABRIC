@@ -1,0 +1,51 @@
+table 'Fact | Inventory Snapshot'
+	lineageTag: 7f447418-ad00-4a63-a28b-6d7a847f6582
+
+	column inventoryid
+		dataType: int64
+		formatString: 0
+		lineageTag: 3753e9de-9c08-47de-9c18-a272c76d1cd1
+		summarizeBy: sum
+		sourceColumn: inventoryid
+
+		annotation SummarizationSetBy = Automatic
+
+	column productid
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f9129a7-0554-44b4-b664-48537f2b1dcf
+		summarizeBy: none
+		sourceColumn: productid
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: befdc976-3de8-4743-9fa3-fcc34e7af837
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column lastupdated
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: da5d4218-33cd-411d-9cc7-c73fbbeeb47e
+		summarizeBy: none
+		sourceColumn: lastupdated
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Fact | Inventory Snapshot' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.inventory", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

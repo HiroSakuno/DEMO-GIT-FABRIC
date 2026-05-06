@@ -1,0 +1,26 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Dim | Calendar","Dim | Customer","Fact | Inventory Snapshot","Fact | Orders","Dim | Order Status","Dim Product"]
+
+annotation PBI_ProTooling = ["TMDLView_Desktop","DevMode"]
+
+ref table 'Dim | Calendar'
+ref table 'Dim | Customer'
+ref table 'Fact | Inventory Snapshot'
+ref table 'Fact | Orders'
+ref table 'Dim | Order Status'
+ref table 'Dim Product'
+ref table Parâmetro
+ref table Medidas
+ref table Dates
+
+ref cultureInfo pt-BR
+

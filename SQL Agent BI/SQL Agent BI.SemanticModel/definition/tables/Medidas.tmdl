@@ -1,0 +1,157 @@
+table Medidas
+	lineageTag: f45ee011-7bee-4d90-a5a3-6f6c248eeebe
+
+	measure 'Total Orders' =
+			
+			COUNTROWS('Fact | Orders')
+		formatString: #,0
+		lineageTag: 2785b5ee-18c3-4535-89e6-6eb133c26f49
+
+	measure 'Total Quantity' =
+			
+			SUM('Fact | Orders'[quantity])
+		formatString: 0
+		lineageTag: c3550819-e6dd-4dd3-a31f-6da9a7212f46
+
+	measure 'Total Revenue' =
+			
+			SUM('Fact | Orders'[totalamount])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 31ce956f-70bb-4bc8-937a-30a5122e5a15
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Average Ticket' =
+			
+			DIVIDE([Total Revenue], [Total Orders])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: ccdb9768-a697-4164-87ad-8214fc4dba25
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Unique Customers' =
+			
+			DISTINCTCOUNT('Fact | Orders'[customerid])
+		formatString: 0
+		lineageTag: 36d947ff-d482-4e0f-ac06-efe89104a25f
+
+	measure '% Cancelled Orders' =
+			
+			DIVIDE(
+			    CALCULATE([Total Orders], 'Dim | Order Status'[statusname] = "Cancelled"),
+			    [Total Orders]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: c619375a-1f05-4e2c-89a6-51d60613a4a2
+
+	measure 'Current Stock' =
+			
+			SUM('Fact | Inventory Snapshot'[quantity])
+		formatString: 0
+		lineageTag: 59d537c4-9602-4d21-aeb7-650d38480aac
+
+	measure 'Stock Coverage (Days)' =
+			
+			DIVIDE(
+			    [Current Stock],
+			    DIVIDE([Total Quantity], DISTINCTCOUNT('Dim | Calendar'[calendardate]))
+			)
+		lineageTag: fce70f8c-0deb-4f86-ae3c-98a7eae0e67b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Week Color' = ```
+			
+			SWITCH(
+			    TRUE(),
+			    MAX('Dim | Calendar'[week_num]) = 1, "#E3F2FD",   -- very light ice blue
+			    CALCULATE(
+			        SELECTEDVALUE('Dim | Calendar'[week_num])) = 2, "#90CAF9",   -- soft sky blue
+			    SELECTEDVALUE('Dim | Calendar'[week_num]) = 3, "#42A5F5",   -- medium blue
+			    SELECTEDVALUE('Dim | Calendar'[week_num]) = 4, "#1E88E5",   -- strong blue
+			    SELECTEDVALUE('Dim | Calendar'[week_num]) = 5, "#0D47A1"   -- deep navy blue
+			    // "#E3F2FD"  -- default (in case week not 1-5)
+			)
+			
+			```
+		lineageTag: f409b747-2411-4ad4-b075-183a51633247
+
+	measure 'Net Revenue' = ```
+			
+			
+			CALCULATE(
+			    [Total Revenue],
+			    'Dim | Order Status'[statusid] <> 4 
+			)
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 44fd3459-7d34-40ab-bb3f-b0bc8b183d11
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Potential Lost Revenue' = ```
+			
+			CALCULATE(
+			    [Total Revenue],
+			    'Dim | Order Status'[statusid] = 4 
+			)
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 75327da9-693a-4ab1-8c6a-35f125d0fd5a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue trend' =
+			
+			
+			IF(
+			    SELECTEDVALUE('Dim | Order Status'[statusid]) = 4,
+			    - [Total Revenue],
+			    [Total Revenue]
+			)
+		lineageTag: 56f55a50-204e-4e04-b419-c3041da1cbe9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LM Net Revenue' =
+			
+			
+			CALCULATE(
+			    [Net Revenue],
+			    DATEADD('Dim | Calendar'[calendardate],-1,MONTH)
+			)
+		lineageTag: 78eb4327-a66c-4042-bf16-4b68cafd7358
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% of revenue' =
+			
+			
+			DIVIDE(
+			    [Net Revenue],
+			    CALCULATE(
+			        [Net Revenue],
+			        REMOVEFILTERS('Dim Product'[category])
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e97289c5-0a72-433f-803a-c07e3046b380
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: acd04234-ed49-4c9f-a2de-c75352dc5913
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 789a611203a045998977dce73fcdb9fc
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

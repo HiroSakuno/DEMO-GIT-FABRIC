@@ -1,0 +1,36 @@
+relationship 960b2919-daf6-47eb-b227-734538913c2d
+	fromColumn: 'Fact | Inventory Snapshot'.productid
+	toColumn: 'Dim Product'.productid
+
+	annotation PBI_IsFromSource = FS
+
+relationship b515c4d0-dffd-4eac-83e7-d267e7d0d489
+	fromColumn: 'Fact | Orders'.orderdate
+	toColumn: 'Dim | Calendar'.calendardate
+
+	annotation PBI_IsFromSource = FS
+
+relationship 50fa7347-24e9-4803-b8a1-2ae9b1757b94
+	fromColumn: 'Fact | Orders'.customerid
+	toColumn: 'Dim | Customer'.customerid
+
+	annotation PBI_IsFromSource = FS
+
+relationship 717ebd79-6273-4083-9234-6651d012b535
+	fromColumn: 'Fact | Orders'.statusid
+	toColumn: 'Dim | Order Status'.statusid
+
+	annotation PBI_IsFromSource = FS
+
+relationship 61b7de25-7259-4d13-8f12-d3efae792178
+	fromColumn: 'Fact | Orders'.productid
+	toColumn: 'Dim Product'.productid
+
+	annotation PBI_IsFromSource = FS
+
+relationship 3f525b63-213b-7d11-1525-404e4bec07ae
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Dates.Date
+	toColumn: 'Dim | Calendar'.calendardate
+

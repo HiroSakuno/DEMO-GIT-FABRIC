@@ -1,0 +1,106 @@
+table Parâmetro
+	lineageTag: 560918c9-7b85-483e-be39-efb9ae91bdb0
+
+	column Parâmetro
+		lineageTag: 00c1cc43-8fcd-4db6-b63e-25633e090019
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parâmetro Pedido'
+
+		relatedColumnDetails
+			groupByColumn: 'Parâmetro Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Campos'
+		isHidden
+		lineageTag: 630903b7-89e2-4199-b977-96be80fd84eb
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parâmetro Pedido'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Pedido'
+		isHidden
+		formatString: 0
+		lineageTag: 5d75e8a1-5671-4e40-a0d7-01e9299ffd94
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value4
+		lineageTag: ff1184b6-3d70-4936-a325-91e3f520d9af
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value5
+		formatString: 0
+		lineageTag: 24ae6568-2998-4e85-9c0b-b9597f5b4708
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value5]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parâmetro = calculated
+		mode: import
+		source = ```
+				
+				{
+				    // Dim | Calendar
+				    ("Dim | Calendar", "Tabela", 0, "Calendar", 0),
+				    ("calendardate", NAMEOF('Dim | Calendar'[calendardate]), 1, "Calendar", 0),
+				    ("month", NAMEOF('Dim | Calendar'[month]), 2, "Calendar", 0),
+				    ("year", NAMEOF('Dim | Calendar'[year]), 3, "Calendar", 0),
+				
+				    // Dim | Customer
+				    ("Dim | Customer", "Tabela", 4, "Customer", 1),
+				    ("customerid", NAMEOF('Dim | Customer'[customerid]), 5, "Customer", 1),
+				    ("fullname", NAMEOF('Dim | Customer'[fullname]), 6, "Customer", 1),
+				    ("email", NAMEOF('Dim | Customer'[email]), 7, "Customer", 1),
+				
+				    // Dim | Order Status
+				    ("Dim | Order Status", "Tabela", 8, "Order Status", 2),
+				    ("statusid", NAMEOF('Dim | Order Status'[statusid]), 9, "Order Status", 2),
+				    ("statusname", NAMEOF('Dim | Order Status'[statusname]), 10, "Order Status", 2),
+				
+				    // Dim | Product
+				    ("Dim | Product", "Tabela", 11, "Product", 3),
+				    ("productid", NAMEOF('Dim Product'[productid]), 12, "Product", 3),
+				    ("productname", NAMEOF('Dim Product'[productname]), 13, "Product", 3),
+				    ("category", NAMEOF('Dim Product'[category]), 14, "Product", 3),
+				    ("unitprice", NAMEOF('Dim Product'[unitprice]), 15, "Product", 3),
+				
+				    // Fact | Inventory Snapshot
+				    ("Fact | Inventory Snapshot", "Tabela", 16, "Inventory Snapshot", 4),
+				    ("inventoryid", NAMEOF('Fact | Inventory Snapshot'[inventoryid]), 17, "Inventory Snapshot", 4),
+				    ("productid", NAMEOF('Fact | Inventory Snapshot'[productid]), 18, "Inventory Snapshot", 4),
+				    ("quantity", NAMEOF('Fact | Inventory Snapshot'[quantity]), 19, "Inventory Snapshot", 4),
+				    ("lastupdated", NAMEOF('Fact | Inventory Snapshot'[lastupdated]), 20, "Inventory Snapshot", 4),
+				
+				    // Fact | Orders
+				    ("Fact | Orders", "Tabela", 21, "Orders", 5),
+				    ("orderid", NAMEOF('Fact | Orders'[orderid]), 22, "Orders", 5),
+				    ("customerid", NAMEOF('Fact | Orders'[customerid]), 23, "Orders", 5),
+				    ("productid", NAMEOF('Fact | Orders'[productid]), 24, "Orders", 5),
+				    ("orderdate", NAMEOF('Fact | Orders'[orderdate]), 25, "Orders", 5),
+				    ("quantity", NAMEOF('Fact | Orders'[quantity]), 26, "Orders", 5),
+				    ("totalamount", NAMEOF('Fact | Orders'[totalamount]), 27, "Orders", 5),
+				    ("statusid", NAMEOF('Fact | Orders'[statusid]), 28, "Orders", 5)
+				}
+				
+				```
+
+	annotation PBI_Id = e319ca3f86524c79a4546a9cab6d44c5
+

@@ -1,0 +1,71 @@
+table 'Dim | Calendar'
+	lineageTag: 08b8d57a-6788-42ed-8c6a-7ef491938b88
+
+	column calendardate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bea98c63-9b06-4fe3-94c0-ef98ccfa1f9c
+		summarizeBy: none
+		sourceColumn: calendardate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: b14437e3-448d-4db8-a297-2293e8af0e5e
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: eb2ef0d0-5cd3-428a-9246-a13fb7e68be0
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_year = FORMAT([calendardate], "mMM/yyyy")
+		lineageTag: 5522a450-e41c-461b-8b89-7f57212d7eb8
+		summarizeBy: none
+		sortByColumn: month_year_num
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_year_num = [year]*100 + [month]+0
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b3ae620-abd2-4a3f-814a-10f8b037a563
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_num = WEEKNUM('Dim | Calendar'[calendardate],1)
+		formatString: 0
+		lineageTag: 44723efc-be0c-4385-b3bc-efb342bf7952
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim | Calendar' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.calendar", null, [EnableFolding=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"calendardate", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

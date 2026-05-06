@@ -1,0 +1,79 @@
+table 'Fact | Orders'
+	lineageTag: c2fc0dec-b4b6-42c6-b41f-9ab1285b6393
+
+	column orderid
+		dataType: int64
+		formatString: 0
+		lineageTag: 02e7bd87-70d1-4ede-99dd-8d3d82a14314
+		summarizeBy: sum
+		sourceColumn: orderid
+
+		annotation SummarizationSetBy = Automatic
+
+	column customerid
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d326dd9-e780-4b35-8968-f601a5ca0af0
+		summarizeBy: none
+		sourceColumn: customerid
+
+		annotation SummarizationSetBy = Automatic
+
+	column productid
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c464876-c6fc-4f35-90fa-66afa2da0d71
+		summarizeBy: none
+		sourceColumn: productid
+
+		annotation SummarizationSetBy = Automatic
+
+	column orderdate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c7679c8d-9514-4ad9-8f74-d70e5e39dd24
+		summarizeBy: none
+		sourceColumn: orderdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e728222-a078-42e3-9c66-c09d31081f25
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column totalamount
+		dataType: double
+		lineageTag: d38e55a5-ddf3-4bfa-b6b8-651f8f214d48
+		summarizeBy: sum
+		sourceColumn: totalamount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column statusid
+		dataType: int64
+		formatString: 0
+		lineageTag: 04a4351e-c0c1-4056-bdd1-12fe05b81286
+		summarizeBy: none
+		sourceColumn: statusid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Fact | Orders' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.orders", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

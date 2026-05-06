@@ -1,0 +1,50 @@
+table 'Dim Product'
+	lineageTag: 11d7797c-4175-48ad-b728-cb9d512ebf6c
+
+	column productid
+		dataType: int64
+		formatString: 0
+		lineageTag: 2082070e-02e8-4218-9d3c-a46c315f1727
+		summarizeBy: none
+		sourceColumn: productid
+
+		annotation SummarizationSetBy = Automatic
+
+	column productname
+		dataType: string
+		lineageTag: b31dbae0-79d9-4815-9751-82cd583b3744
+		summarizeBy: none
+		sourceColumn: productname
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: d2aac4ba-ebc8-4dd4-8ef4-0b69c8cb5d42
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column unitprice
+		dataType: double
+		lineageTag: 37faa6ef-84df-4060-994c-a29c380e394c
+		summarizeBy: sum
+		sourceColumn: unitprice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Dim Product' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.product", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

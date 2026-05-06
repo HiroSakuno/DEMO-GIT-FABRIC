@@ -1,0 +1,40 @@
+table 'Dim | Customer'
+	lineageTag: 5a8554cd-009c-4227-b7ea-29f885488c45
+
+	column customerid
+		dataType: int64
+		formatString: 0
+		lineageTag: fa431289-ebd7-4942-86cd-dba36284d00f
+		summarizeBy: none
+		sourceColumn: customerid
+
+		annotation SummarizationSetBy = Automatic
+
+	column fullname
+		dataType: string
+		lineageTag: 50571ad2-a9ec-4fdd-9b77-b45e38946a8a
+		summarizeBy: none
+		sourceColumn: fullname
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: cc3899ee-c92a-4a8e-b0bc-c1667cd0db42
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim | Customer' = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.customer", null, [EnableFolding=true])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

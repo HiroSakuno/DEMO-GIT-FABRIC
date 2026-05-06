@@ -1,0 +1,112 @@
+table Dates
+	lineageTag: 969654eb-1f26-4047-9a87-906201d623d8
+
+	column Date
+		formatString: Long Date
+		lineageTag: 7ed6dd40-497a-41d5-9778-ddda11e5a62d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Type
+		lineageTag: 5c2458fd-f0cd-4fcf-bf16-4ad72dd68faa
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sort
+		formatString: 0
+		lineageTag: 07978bdb-ecbc-4bd7-a17b-b4f36422c152
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sort1
+		lineageTag: f279de62-0df8-4628-86c8-b9ae86879023
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Sort1]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dates = calculated
+		mode: import
+		source = ```
+				
+				UNION(
+				    ADDCOLUMNS(
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1) - 1, 1, 1),
+				            DATE(YEAR(TODAY() - 1) - 1, 12, 31)
+				        ),
+				        "Type", "Yr " & YEAR(TODAY() - 1) - 1,
+				        "Sort", 103,
+				        "Sort1", 103 & [Date]
+				    ),
+				    // ADDCOLUMNS( 
+				    //     CALENDAR(
+				    //         DATE(YEAR(TODAY() - 1) - 1, 1, 1),
+				    //         DATE(YEAR(TODAY() - 1) - 1, 12, 31)
+				    //     ),
+				    //     "Type", "PY",
+				    //     "Sort", 102,
+				    //     "Sort1", 102 & [Date]
+				    // ),
+				    ADDCOLUMNS( 
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1), 1, 1),
+				            TODAY()
+				        ),
+				        "Type", "CY",
+				        "Sort", 101,
+				        "Sort1", 101 & [Date]
+				    ),
+				    ADDCOLUMNS(
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1), MONTH(TODAY() - 1), 1),
+				            DATE(YEAR(TODAY() - 1), MONTH(TODAY() - 1), DAY(TODAY()))
+				        ),
+				        "Type", "MTD",
+				        "Sort", 104,
+				        "Sort1", 104 & [Date]
+				    ),
+				    ADDCOLUMNS(
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1), QUARTER(TODAY() - 1) * 3 - 2, 1),
+				            DATE(YEAR(TODAY() - 1), MONTH(TODAY() - 1), DAY(TODAY()))
+				        ),
+				        "Type", "QTD",
+				        "Sort", 204,
+				        "Sort1", 204 & [Date]
+				    ),
+				    ADDCOLUMNS(
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1), 1, 1),
+				            DATE(YEAR(TODAY() - 1), MONTH(TODAY() - 1), DAY(TODAY()))
+				        ),
+				        "Type", "YTD",
+				        "Sort", 304,
+				        "Sort1", 304 & [Date]
+				    ),
+				    ADDCOLUMNS( 
+				        CALENDAR(
+				            DATE(YEAR(TODAY() - 1), 1, 1),
+				            TODAY() - 1
+				        ),
+				        "Type", "Qtr " & QUARTER([Date]),
+				        "Sort", 404,
+				        "Sort1", 404 & [Date]
+				    )
+				)
+				```
+
+	annotation PBI_Id = 0f8cdd73010c423a8d8326af7f9688ec
+
