@@ -30,7 +30,7 @@ table 'Dim | Customer'
 		mode: import
 		source =
 				let
-				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.customer", null, [EnableFolding=true])
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com:5432", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.customer", null, [EnableFolding=true])
 				in
 				    Source
 

@@ -22,7 +22,7 @@ table 'Dim | Order Status'
 		mode: import
 		source =
 				let
-				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.order_status", null, [EnableFolding=true])
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com:5432", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.order_status", null, [EnableFolding=true])
 				in
 				    Source
 

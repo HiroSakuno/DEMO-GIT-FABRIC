@@ -4,7 +4,7 @@
   "position": {
     "x": 9.72644376899696,
     "y": 160.48632218844986,
-    "z": 0,
+    "z": 7000,
     "height": 280.1215805471125,
     "width": 864.68085106382978,
     "tabOrder": 0
@@ -80,7 +80,87 @@
                   "Value": "true"
                 }
               }
+            },
+            "enableDetailDataLabel": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Auto'"
+                }
+              }
+            },
+            "optimizeLabelDisplay": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "detailFontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
             }
+          }
+        },
+        {
+          "properties": {
+            "dynamicLabelDetail": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Net Revenue MoM Δ"
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "highlightMatching": 1
+          }
+        },
+        {
+          "properties": {},
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ]
           }
         }
       ],
@@ -292,7 +372,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "602f9a3c5300c5849a72",
+        "name": "d57f7402322a36675307",
         "field": {
           "Column": {
             "Expression": {
@@ -306,7 +386,7 @@
         "type": "Categorical"
       },
       {
-        "name": "2e5b1e195783e188764c",
+        "name": "fefed8629330d634096c",
         "field": {
           "Measure": {
             "Expression": {

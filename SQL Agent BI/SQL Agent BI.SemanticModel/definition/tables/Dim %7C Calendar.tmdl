@@ -60,7 +60,7 @@ table 'Dim | Calendar'
 		mode: import
 		source =
 				let
-				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.calendar", null, [EnableFolding=true]),
+				    Source = Value.NativeQuery(PostgreSQL.Database("aws-0-us-east-1.pooler.supabase.com:5432", "postgres"), "SELECT#(lf)*#(lf)FROM#(lf)public.calendar", null, [EnableFolding=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"calendardate", type date}})
 				in
 				    #"Changed Type"

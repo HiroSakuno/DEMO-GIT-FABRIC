@@ -226,37 +226,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "daac0ce7d6accced8903",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Dim | Order Status"
-              }
-            },
-            "Property": "statusname"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "6995d7c8807d26cb0200",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Medidas"
-              }
-            },
-            "Property": "Revenue trend"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

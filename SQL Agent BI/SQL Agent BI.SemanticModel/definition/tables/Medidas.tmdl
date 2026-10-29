@@ -137,6 +137,23 @@ table Medidas
 		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: e97289c5-0a72-433f-803a-c07e3046b380
 
+	measure 'Net Revenue MoM Δ' =
+			
+			VAR _Current = [Net Revenue]
+			VAR _Prev = [LM Net Revenue]
+			VAR _Pct =
+			    DIVIDE(_Current - _Prev, _Prev)
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    ISBLANK(_Pct), "",
+			    _Pct > 0, "↑ " & FORMAT(_Pct, "0.0%") & " vs LM",
+			    _Pct < 0, "↓ " & FORMAT(ABS(_Pct), "0.0%") & " vs LM",
+			    ""
+			)
+		lineageTag: 6e232046-4cd7-440e-8820-8e64d42da249
+
 	column Column
 		isHidden
 		formatString: 0
